@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Dtos;
 using ParkyAPI.Models;
@@ -6,6 +7,7 @@ using ParkyAPI.Repository;
 
 namespace ParkyAPI.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NationalParksController : ControllerBase
@@ -20,6 +22,7 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "Admin")]
         public IActionResult GetAllNationalParks()
         {
             var objList = npRepo.GetAllNationalParks();

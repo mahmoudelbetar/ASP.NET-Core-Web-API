@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Dtos;
@@ -7,6 +8,7 @@ using ParkyAPI.Repository;
 
 namespace ParkyAPI.Controllers
 {
+    //[Authorize]
     [Route("api/Trails")]
     [ApiController]
     public class TrailsController : ControllerBase

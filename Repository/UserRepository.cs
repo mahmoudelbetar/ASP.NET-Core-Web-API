@@ -19,7 +19,7 @@ namespace ParkyAPI.Repository
         }
         public User Authenticate(string username, string password)
         {
-            var user = db.User.SingleOrDefault(u => u.UserName == username && u.Password == password);
+            var user = db.Users.SingleOrDefault(u => u.UserName == username && u.Password == password);
             if (user == null)
             {
                 return null;
@@ -33,7 +33,8 @@ namespace ParkyAPI.Repository
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, user.Id.ToString())
+                        new Claim(ClaimTypes.Name, user.Id.ToString()),
+                        new Claim(ClaimTypes.Role, user.Role)
                     }),
                     Expires = DateTime.UtcNow.AddDays(7),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -47,12 +48,28 @@ namespace ParkyAPI.Repository
 
         public bool IsUniqueUser(string username)
         {
-            throw new NotImplementedException();
+            bool isExists = db.Users.Any(u => u.UserName == username);
+            if (!isExists)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public User Register(string username, string password)
         {
-            throw new NotImplementedException();
+            var user = new User()
+            {
+                UserName = username,
+                Password = password,
+                Role = "Admin"
+            };
+            db.Users.Add(user);
+            db.SaveChanges();
+            return user;
         }
     }
 }
